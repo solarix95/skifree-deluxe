@@ -14,7 +14,9 @@ include(../../libqtr2d/libqtr2d/libqtr2d.pro)
 SOURCES += main.cc \
     sfgame.cc \
     sftree.cc \
-    sfsprites.cc
+    sfsprites.cc \
+    sfobjects.cc \
+    sfstaticobject.cc
 
 RESOURCES += \
     skifree.qrc
@@ -22,6 +24,7 @@ RESOURCES += \
 HEADERS += \
     sfgame.h \
     sftree.h \
-    sfsprites.h
-
+    sfsprites.h \
+    sfobjects.h \
+    sfstaticobject.h
 

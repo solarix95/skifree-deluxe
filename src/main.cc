@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
   widget.setCamera(&cam);
   widget.setWindowTitle("Skifree Deluxe");
   game.init();
+  cam.setFieldOfViewMode(Qtr2dCamera::NativeFov);
   cam.lookTo(50,50);
 
   widget.show();

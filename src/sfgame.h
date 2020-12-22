@@ -4,7 +4,7 @@
 #include <QObject>
 #include <qtr2dzone.h>
 #include "sfsprites.h"
-
+#include "sfobjects.h"
 
 class SfGame : public Qtr2dZone
 {
@@ -20,6 +20,7 @@ private slots:
 signals:
 
 private:
+    SfObjects mObjects;
     SfSprites mSprites;
 };
 

@@ -1,0 +1,19 @@
+{
+    "objects" : {
+        "tree1" : {
+            "type"   : "static",
+            "sprite" : ":/sprites/skifree_sprites.png",
+            "rect"   : "297 189 28 32"
+        },
+        "tree2" :  {
+            "type"   : "static",
+            "sprite" : ":/sprites/skifree_sprites.png",
+            "rect"   : "330 189 28 32"
+        },
+        "tree3" : {
+            "type"   : "static",
+            "sprite" : ":/sprites/skifree_sprites.png",
+            "rect"   : "359 189 26 32"
+        }
+    }
+}
