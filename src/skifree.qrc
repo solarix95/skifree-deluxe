@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>sprites/skifree_sprites.png</file>
+    </qresource>
+</RCC>
