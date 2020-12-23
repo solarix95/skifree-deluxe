@@ -16,7 +16,8 @@ SOURCES += main.cc \
     sftree.cc \
     sfsprites.cc \
     sfobjects.cc \
-    sfstaticobject.cc
+    sfstaticobject.cc \
+    sfplayer.cc
 
 RESOURCES += \
     skifree.qrc
@@ -26,5 +27,6 @@ HEADERS += \
     sftree.h \
     sfsprites.h \
     sfobjects.h \
-    sfstaticobject.h
+    sfstaticobject.h \
+    sfplayer.h
 

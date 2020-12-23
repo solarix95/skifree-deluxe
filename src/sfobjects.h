@@ -15,10 +15,13 @@ public:
     SfObjects();
 
     void init(Qtr2dZone &zone, const QVariantMap &jsonConfig);
-    Qtr2dBody *create(const QString &name);
+    Qtr2dBody *create(const QString &name, const QPointF &pos);
 
 private:
-    Qtr2dBody *createStaticBody(const QVariantMap &jsonConfig);
+    Qtr2dBody *createStaticBody(const QVariantMap &jsonConfig, const QPointF &pos);
+    Qtr2dBody *createPlayerBody(const QVariantMap &jsonConfig, const QPointF &pos);
+
+    bool           config2Sprite(const QVariantMap &jsonConfig, QPixmap &sprite);
     const QPixmap &spriteByName(const QString &name);
 
     Qtr2dZone            *mZone;

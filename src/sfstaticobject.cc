@@ -25,8 +25,6 @@ void SfStaticObject::renderModelCentered(QPainter &p) const
     int startX = -mSprite.width()/2;
     int startY =  mSprite.height()/2;
 
-    int y = -mSprite.height()/2;
-
     QRgb white = QColor(Qt::white).rgb();
     for (int x=0; x<mSprite.width(); x++) {
         for (int y=0; y<mSprite.height(); y++) {

@@ -21,6 +21,7 @@ public:
 
 protected:
     virtual void renderModelCentered(QPainter &p) const;
+
 private:
     QImage       mSprite;
     QPainterPath mPainterPath;
