@@ -25,10 +25,25 @@
             "sprite" : ":/sprites/skifree_sprites.png",
             "rect"   : "392 189 32 65"
         },
-        "stone" : {
+        "tree5" : {
+            "type"   : "static",
+            "sprite" : ":/sprites/skifree_sprites.png",
+            "rect"   : "296 229 21 27"
+        },
+        "stone1" : {
                     "type"   : "static",
                     "sprite" : ":/sprites/skifree_sprites.png",
                     "rect"   : "139 227 23 10"
+                },
+        "stone2" : {
+                    "type"   : "static",
+                    "sprite" : ":/sprites/skifree_sprites.png",
+                    "rect"   : "167 227 16 11"
+                },
+        "stone3" : {
+                    "type"   : "static",
+                    "sprite" : ":/sprites/skifree_sprites.png",
+                    "rect"   : "185 227 8 11"
                 },
         "start-left" : {
             "type"   : "static",

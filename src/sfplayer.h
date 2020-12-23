@@ -3,6 +3,7 @@
 
 #include <QMap>
 #include <QImage>
+#include <QTime>
 #include <qtr2dbody.h>
 
 class SfPlayer : public Qtr2dBody
@@ -19,16 +20,20 @@ public:
 
     void appendSprite(State s, const QPixmap &sprite);
 
+    virtual bool     move(double speed);
     virtual void keyPressEvent(QKeyEvent *event);
     virtual QRectF boundingRect() const;
 
   protected:
     virtual void renderModelCentered(QPainter &p) const;
+    virtual void onCollision(Qtr2dBody *other);
 
 private:
     QImage currentSprite() const;
+    void setState(State newState);
 
     State              mState;
+    QTime              mStateTimer;
     QMap<State,QImage> mSprites;
 };
 

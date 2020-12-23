@@ -13,7 +13,7 @@ SfStaticObject::SfStaticObject(const QPixmap &sprite, const QRect &collisionBox,
 QRectF SfStaticObject::boundingRect() const
 {
     int x = -mSprite.width()/2;
-    int y =  mSprite.height()/2;
+    int y = -mSprite.height()/2;
 
     QRect box(x,y,mSprite.width(),mSprite.height());
     return box.translated(pos().x(),pos().y());

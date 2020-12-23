@@ -79,7 +79,7 @@ void SfGame::updateScenery()
     int maxY = mSceneryY - 500;
 
 
-    QStringList staticObjs = { "tree1", "tree2", "tree3", "tree4", "stone" };
+    QStringList staticObjs = { "tree1", "tree2", "tree3", "tree4", "tree5","stone1","stone1","stone3" };
 
     for (int i=0; i<100; i++) {
         int x = minX + (qrand() % (maxX - minX));
