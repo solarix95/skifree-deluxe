@@ -5,6 +5,7 @@
 #include <QMap>
 #include <QString>
 #include <QPixmap>
+#include <QStringList>
 
 #include <qtr2dbody.h>
 #include <qtr2dzone.h>
@@ -16,6 +17,7 @@ public:
 
     void init(Qtr2dZone &zone, const QVariantMap &jsonConfig);
     Qtr2dBody *create(const QString &name, const QPointF &pos);
+    QStringList playerList() const;
 
 private:
     Qtr2dBody *createStaticBody(const QVariantMap &jsonConfig, const QPointF &pos);

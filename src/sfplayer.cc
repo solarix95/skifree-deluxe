@@ -1,10 +1,14 @@
 #include <QDebug>
 #include <QKeyEvent>
+
+#include <qtr2dzone.h>
+
 #include "sfplayer.h"
 
 //-------------------------------------------------------------------------------------------------
 SfPlayer::SfPlayer(const QPointF &p, Qtr2dZone &zone)
  : Qtr2dBody(p,zone)
+ , mSpeed(0.5)
 {
     mState = LeftState;
     mCollisionRadius = 50;
@@ -14,7 +18,6 @@ SfPlayer::SfPlayer(const QPointF &p, Qtr2dZone &zone)
 //-------------------------------------------------------------------------------------------------
 SfPlayer::~SfPlayer()
 {
-
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -24,12 +27,20 @@ void SfPlayer::appendSprite(SfPlayer::State s, const QPixmap &sprite)
 }
 
 //-------------------------------------------------------------------------------------------------
+void SfPlayer::setSpeed(float speed)
+{
+    mSpeed = speed;
+}
+
+//-------------------------------------------------------------------------------------------------
 bool SfPlayer::move(double speed)
 {
     if (mState == CrashedState && mStateTimer.elapsed() > 1000) {
 
     }
 
+    if (!velocity().isNull())
+        zone().createParticles(collisionRect().translated(0,5),-velocity(),1,0.5,Qt::gray,250);
     return Qtr2dBody::move(speed);
 }
 
@@ -110,10 +121,10 @@ void SfPlayer::setState(SfPlayer::State newState)
         setVelocity(QVector2D(0,0));
         break;
     case LeftState:
-        setVelocity(QVector2D(-0.5, -0.5));
+        setVelocity(QVector2D(-mSpeed, -mSpeed));
         break;
     case RightState:
-        setVelocity(QVector2D( 0.5, -0.5));
+        setVelocity(QVector2D( mSpeed, -mSpeed));
         break;
     }
 }

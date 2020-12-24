@@ -33,6 +33,20 @@ Qtr2dBody *SfObjects::create(const QString &name, const QPointF &pos)
 }
 
 //-------------------------------------------------------------------------------------------------
+QStringList SfObjects::playerList() const
+{
+    QStringList keys = mObjectsConfig.keys();
+    QStringList players;
+
+    foreach(QString key, keys) {
+        if (mObjectsConfig[key].toMap()["type"] == "player")
+            players << key;
+    }
+
+    return players;
+}
+
+//-------------------------------------------------------------------------------------------------
 Qtr2dBody *SfObjects::createStaticBody(const QVariantMap &jsonConfig, const QPointF &pos)
 {
     QPixmap sprite;
@@ -45,17 +59,31 @@ Qtr2dBody *SfObjects::createStaticBody(const QVariantMap &jsonConfig, const QPoi
 Qtr2dBody *SfObjects::createPlayerBody(const QVariantMap &jsonConfig, const QPointF &pos)
 {
     QVariantMap spritesConfig = jsonConfig["sprites"].toMap();
-    QPixmap sprite;
 
     SfPlayer *p = new SfPlayer(pos,*mZone);
-    if (config2Sprite(spritesConfig["left"].toMap(),sprite))
-        p->appendSprite(SfPlayer::LeftState,sprite);
 
-    if (config2Sprite(spritesConfig["right"].toMap(),sprite))
-        p->appendSprite(SfPlayer::RightState,sprite);
+    QPixmap leftSprite;
+    QPixmap rightSprite;
+    QPixmap crashedSprite;
 
-    if (config2Sprite(spritesConfig["crashed"].toMap(),sprite))
-        p->appendSprite(SfPlayer::CrashedState,sprite);
+    config2Sprite(spritesConfig["left"].toMap(),leftSprite);
+    config2Sprite(spritesConfig["right"].toMap(),rightSprite);
+    config2Sprite(spritesConfig["crashed"].toMap(),crashedSprite);
+
+    if (leftSprite.isNull() && !rightSprite.isNull())
+        leftSprite = QPixmap::fromImage(rightSprite.toImage().mirrored(true,false));
+
+    if (rightSprite.isNull() && !leftSprite.isNull())
+        rightSprite = QPixmap::fromImage(leftSprite.toImage().mirrored(true,false));
+
+    p->appendSprite(SfPlayer::LeftState,leftSprite);
+    p->appendSprite(SfPlayer::RightState,rightSprite);
+    p->appendSprite(SfPlayer::CrashedState,crashedSprite);
+
+    bool done = false;
+    float speed = jsonConfig["speed"].toFloat(&done);
+    if (done)
+        p->setSpeed(speed);
 
     return p;
 }

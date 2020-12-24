@@ -47,7 +47,9 @@ void SfGame::initGame()
 
     registerBody(mObjects.create("help-flag",QPointF(200,100)));
 
-    mPlayer = registerBody(mObjects.create("child",QPointF(0,100)),true);
+    // mPlayer = registerBody(mObjects.create("child",QPointF(0,100)),true);
+    QStringList players = mObjects.playerList();
+    mPlayer = registerBody(mObjects.create(players[qrand()%players.count()],QPointF(0,100)),true);
     connect(mPlayer, &Qtr2dBody::changed, this, &SfGame::updateScenery);
 
     emit playerCreated(mPlayer);
@@ -79,9 +81,9 @@ void SfGame::updateScenery()
     int maxY = mSceneryY - 500;
 
 
-    QStringList staticObjs = { "tree1", "tree2", "tree3", "tree4", "tree5","stone1","stone1","stone3" };
+    QStringList staticObjs = { "tree1", "tree2", "tree3", "tree4", "tree5","tree6","stone1","stone1","stone3" };
 
-    for (int i=0; i<100; i++) {
+    for (int i=0; i<50; i++) {
         int x = minX + (qrand() % (maxX - minX));
         int y = minY - (qrand() % (maxY - minY));
         registerBody(mObjects.create(staticObjs[qrand()%staticObjs.count()],QPointF(x,y)));
@@ -98,7 +100,7 @@ void SfGame::updateScenery()
             bdys[i]->deleteLater();
             deleted++;
         }
-        if (deleted > 100)
+        if (deleted > 50)
             return;
     }
 }

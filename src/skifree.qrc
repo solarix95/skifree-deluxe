@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>sprites/skifree_sprites.png</file>
         <file>skifree.json</file>
+        <file>sprites/deluxe_sprites.png</file>
     </qresource>
 </RCC>
