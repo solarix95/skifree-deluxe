@@ -47,13 +47,11 @@ void SfGame::initGame()
 
     registerBody(mObjects.create("help-flag",QPointF(200,100)));
 
-    // mPlayer = registerBody(mObjects.create("child",QPointF(0,100)),true);
     QStringList players = mObjects.playerList();
-    mPlayer = registerBody(mObjects.create(players[qrand()%players.count()],QPointF(0,100)),true);
+    mPlayer = registerBody(mObjects.create(players[qrand()%players.count()],QPointF(0,200)),true);
     connect(mPlayer, &Qtr2dBody::changed, this, &SfGame::updateScenery);
 
     emit playerCreated(mPlayer);
-    // registerBody(mObjects.create("tree1"));
 
     updateScenery();
 }

@@ -7,8 +7,10 @@ TARGET = skifree-deluxe
 INCLUDEPATH += .
 QT += widgets
 
-QTR2dPATH = ../../libqtr2d/libqtr2d
-include(../../libqtr2d/libqtr2d/libqtr2d.pro)
+CONFIG += with_builtin_libqtr2d
+
+
+include(config-libqtr2d.pro)
 
 # Input
 SOURCES += main.cc \
