@@ -21,6 +21,7 @@ public:
 
     void appendSprite(State s, const QPixmap &sprite);
     void setSpeed(float speed);
+    void setState(State newState);
 
     virtual bool     move(double speed);
     virtual void keyPressEvent(QKeyEvent *event);
@@ -32,7 +33,6 @@ public:
 
 private:
     QImage currentSprite() const;
-    void setState(State newState);
 
     float              mSpeed;
     State              mState;

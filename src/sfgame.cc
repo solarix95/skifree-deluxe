@@ -13,7 +13,12 @@
 SfGame::SfGame()
  : mSceneryY(0)
 {
+}
 
+//-------------------------------------------------------------------------------------------------
+QStringList SfGame::playerList() const
+{
+    return mObjects.playerList();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -35,7 +40,14 @@ void SfGame::init()
 }
 
 //-------------------------------------------------------------------------------------------------
-void SfGame::initGame()
+void SfGame::reset(const QString &playerName)
+{
+    clear();
+    initGame(playerName);
+}
+
+//-------------------------------------------------------------------------------------------------
+void SfGame::initGame(const QString &playerName)
 {
     mSceneryY = 10;
 
@@ -48,7 +60,11 @@ void SfGame::initGame()
     registerBody(mObjects.create("help-flag",QPointF(200,100)));
 
     QStringList players = mObjects.playerList();
-    mPlayer = registerBody(mObjects.create(players[qrand()%players.count()],QPointF(0,200)),true);
+    if (playerName.isEmpty())
+        mPlayer = registerBody(mObjects.create(players[qrand()%players.count()],QPointF(0,200)),true);
+    else
+        mPlayer = registerBody(mObjects.create(playerName,QPointF(0,200)),true);
+
     connect(mPlayer, &Qtr2dBody::changed, this, &SfGame::updateScenery);
 
     emit playerCreated(mPlayer);
@@ -60,8 +76,7 @@ void SfGame::initGame()
 void SfGame::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_F2) {
-        clear();
-        initGame();
+        reset();
     }
     Qtr2dZone::keyPressEvent(event);
 }

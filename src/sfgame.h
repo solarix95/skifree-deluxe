@@ -14,13 +14,17 @@ class SfGame : public Qtr2dZone
 public:
     SfGame();
 
+    QStringList playerList() const;
+
     virtual void init();
 
 public slots:
-    void initGame();
+    void reset(const QString &playerName = "");
+    void initGame(const QString &playerName = "");
 
 signals:
     void playerCreated(const Qtr2dObject *player);
+    void requestPlayerSelection();
 
 protected:
     virtual void keyPressEvent(QKeyEvent *event);

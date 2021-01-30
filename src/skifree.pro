@@ -7,7 +7,7 @@ TARGET = skifree-deluxe
 INCLUDEPATH += .
 QT += widgets
 
-CONFIG += with_builtin_libqtr2d
+# CONFIG += with_builtin_libqtr2d
 
 
 include(config-libqtr2d.pro)
@@ -19,7 +19,8 @@ SOURCES += main.cc \
     sfsprites.cc \
     sfobjects.cc \
     sfstaticobject.cc \
-    sfplayer.cc
+    sfplayer.cc \
+    sfwidget.cc
 
 RESOURCES += \
     skifree.qrc
@@ -30,5 +31,6 @@ HEADERS += \
     sfsprites.h \
     sfobjects.h \
     sfstaticobject.h \
-    sfplayer.h
+    sfplayer.h \
+    sfwidget.h
 
