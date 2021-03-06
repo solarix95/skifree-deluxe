@@ -12,6 +12,7 @@
 //-------------------------------------------------------------------------------------------------
 SfGame::SfGame()
  : mSceneryY(0)
+ , mPlayer(nullptr)
 {
 }
 
@@ -19,6 +20,12 @@ SfGame::SfGame()
 QStringList SfGame::playerList() const
 {
     return mObjects.playerList();
+}
+
+//-------------------------------------------------------------------------------------------------
+QPixmap SfGame::playerIcon(const QString &playerName) const
+{
+    return mObjects.icon(playerName);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -34,7 +41,6 @@ void SfGame::init()
 
     setFieldSize(QSize(10,10));
     appendBackground(new Qtr2dBrushBackground(Qt::white));
-
 
     initGame();
 }
@@ -59,15 +65,11 @@ void SfGame::initGame(const QString &playerName)
 
     registerBody(mObjects.create("help-flag",QPointF(200,100)));
 
-    QStringList players = mObjects.playerList();
-    if (playerName.isEmpty())
-        mPlayer = registerBody(mObjects.create(players[qrand()%players.count()],QPointF(0,200)),true);
-    else
+    if (!playerName.isEmpty()) {
         mPlayer = registerBody(mObjects.create(playerName,QPointF(0,200)),true);
-
-    connect(mPlayer, &Qtr2dBody::changed, this, &SfGame::updateScenery);
-
-    emit playerCreated(mPlayer);
+        connect(mPlayer, &Qtr2dBody::changed, this, &SfGame::updateScenery);
+        emit playerCreated(mPlayer);
+    }
 
     updateScenery();
 }
@@ -75,26 +77,24 @@ void SfGame::initGame(const QString &playerName)
 //-------------------------------------------------------------------------------------------------
 void SfGame::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_F2) {
-        reset();
-    }
     Qtr2dZone::keyPressEvent(event);
 }
 
 //-------------------------------------------------------------------------------------------------
 void SfGame::updateScenery()
 {
-    if ((mPlayer->pos().y() - 500) > mSceneryY)
+    QPointF playerPos = mPlayer ? mPlayer->pos() : QPointF(0,mSceneryY);
+    if ((playerPos.y() - 500) > mSceneryY)
         return;
 
-    int minX = mPlayer->pos().x() - 2000;
-    int maxX = mPlayer->pos().x() + 2000;
+    int minX = playerPos.x() - 2000;
+    int maxX = playerPos.x() + 2000;
 
     int minY = mSceneryY;
     int maxY = mSceneryY - 500;
 
 
-    QStringList staticObjs = { "tree1", "tree2", "tree3", "tree4", "tree5","tree6","stone1","stone1","stone3" };
+    QStringList staticObjs = { "tree1", "tree2", "tree3", "tree4", "tree5","tree6","stone1","stone1","stone3", "jump" };
 
     for (int i=0; i<50; i++) {
         int x = minX + (qrand() % (maxX - minX));
@@ -107,7 +107,7 @@ void SfGame::updateScenery()
     // Remove top/old objects
     int deleted = 0;
     const Qtr2dBodies &bdys = bodies();
-    int topY = mPlayer->pos().y() + 500;
+    int topY = playerPos.y() + 500;
     for (int i=0; i<bdys.count(); i++) {
         if (bdys[i]->pos().y() > topY) {
             bdys[i]->deleteLater();

@@ -23,13 +23,16 @@ Qtr2dBody *SfObjects::create(const QString &name, const QPointF &pos)
     Q_ASSERT(!bodyConfig.isEmpty());
 
     QString bodyType = bodyConfig["type"].toString();
+
+    Qtr2dBody *body = NULL;
     if (bodyType == "static")
-        return createStaticBody(bodyConfig, pos);
+        body = createStaticBody(bodyConfig, pos);
 
     if (bodyType == "player")
-        return createPlayerBody(bodyConfig, pos);
+        body = createPlayerBody(bodyConfig, pos);
 
-    return NULL;
+    applyAttributes(body,bodyConfig);
+    return body;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -44,6 +47,26 @@ QStringList SfObjects::playerList() const
     }
 
     return players;
+}
+
+//-------------------------------------------------------------------------------------------------
+QPixmap SfObjects::icon(const QString &name) const
+{
+    QVariantMap iconConfig = mObjectsConfig[name].toMap()["icon"].toMap();
+
+    QString fileName;
+    QRect   iconRect;
+    if (!spriteInfo(iconConfig,fileName,iconRect))
+        return QPixmap();
+
+    // Create icon -> but const (config2Sprite() is non const...)
+    QPixmap parentImage;
+    if (mSprites.contains(fileName))
+        parentImage = mSprites[fileName];
+    else
+        parentImage = QPixmap(fileName);
+
+    return parentImage.copy(iconRect);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -91,18 +114,29 @@ Qtr2dBody *SfObjects::createPlayerBody(const QVariantMap &jsonConfig, const QPoi
 //-------------------------------------------------------------------------------------------------
 bool SfObjects::config2Sprite(const QVariantMap &jsonConfig, QPixmap &sprite)
 {
-    if (jsonConfig.isEmpty())
+    QString     spriteName;
+    QRect       rect;
+    if (!spriteInfo(jsonConfig,spriteName,rect))
         return false;
 
-    QString     spriteName  = jsonConfig["sprite"].toString();
+    sprite = spriteByName(spriteName).copy(rect);
+    return true;
+}
+
+//-------------------------------------------------------------------------------------------------
+bool SfObjects::spriteInfo(const QVariantMap &jsonConfig, QString &name, QRect &rect) const
+{
+    name  = jsonConfig["sprite"].toString();
     QStringList rectParts   = jsonConfig["rect"].toString().split(" ");
-    Q_ASSERT(!spriteName.isEmpty());
-    Q_ASSERT( rectParts.count() == 4);
+    if (name.isEmpty())
+        return false;
 
+    if (rectParts.count() != 4)
+        return false;
 
-    sprite = spriteByName(spriteName);
-    QRect   rect   = QRect(rectParts[0].toInt(),rectParts[1].toInt(),rectParts[2].toInt(),rectParts[3].toInt());
-    sprite = sprite.copy(rect);
+    rect   = QRect(rectParts[0].toInt(),rectParts[1].toInt(),rectParts[2].toInt(),rectParts[3].toInt());
+    if (!rect.isValid())
+        return false;
 
     return true;
 }
@@ -114,5 +148,17 @@ const QPixmap &SfObjects::spriteByName(const QString &name)
         mSprites[name] = QPixmap(name);
 
     return mSprites[name];
+}
+
+//-------------------------------------------------------------------------------------------------
+void SfObjects::applyAttributes(Qtr2dObject *obj, const QVariantMap &jsonConfig) const
+{
+    if (!obj)
+        return;
+    QVariantMap attributes = jsonConfig["attributes"].toMap();
+    if (attributes.isEmpty())
+        return;
+    for (auto key: attributes.keys())
+        obj->setAttribute(key, attributes[key]);
 }
 

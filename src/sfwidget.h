@@ -3,7 +3,7 @@
 
 #include <qtr2dwidget.h>
 #include <qtr2dfollowcamera.h>
-#include <qtr2dsimplemenustyle.h>
+#include <qtr2dwin311menustyle.h>
 
 #include "sfgame.h"
 
@@ -13,13 +13,16 @@ class SfWidget : public Qtr2dWidget
 public:
     SfWidget(QWidget *parent = NULL);
 
+protected:
+    virtual void keyPressEvent(QKeyEvent *event);
+
 private slots:
     void resetGame();
 
 private:
     SfGame               mGame;
     Qtr2dFollowCamera    mCamera;
-    Qtr2dSimpleMenuStyle mMenuStyle;
+    Qtr2dWin311MenuStyle mMenuStyle;
 };
 
 #endif // SFWIDGET_H

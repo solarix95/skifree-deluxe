@@ -9,8 +9,11 @@
 SfPlayer::SfPlayer(const QPointF &p, Qtr2dZone &zone)
  : Qtr2dBody(p,zone)
  , mSpeed(0.5)
+ , mJumpHeight(0)
+ , mJumpStep(0)
 {
-    mState = LeftState;
+    mState     = LeftState;
+    mGroundPos = pos();
     mCollisionRadius = 50;
     mCollisionType   = RectCollision;
 }
@@ -39,9 +42,23 @@ bool SfPlayer::move(double speed)
 
     }
 
+    accelerate(speed);
+    mGroundPos = QPointF(mGroundPos.x() + velocity().x(),mGroundPos.y() + velocity().y());
+
+    mJumpHeight += mJumpStep * speed;
+    mJumpStep -= 0.2;
+    if (mJumpHeight < 0) {
+        mJumpHeight = 0;
+        mJumpStep   = 0;
+    }
+    QPointF newPos(mGroundPos.x(), mGroundPos.y() + mJumpHeight);
+    updatePosition(newPos);
+    testCollision();
+
+
     if (!velocity().isNull())
         zone().createParticles(collisionRect().translated(0,5),-velocity(),1,0.5,Qt::gray,250);
-    return Qtr2dBody::move(speed);
+    return false;
 }
 
 
@@ -57,6 +74,11 @@ void SfPlayer::keyPressEvent(QKeyEvent *event)
     if (event->key() == Qt::Key_Right) {
         setState(RightState);
 
+    }
+
+    if (event->key() == Qt::Key_Space && mJumpHeight <= 0) {
+        mJumpStep = 2 + 0.5*(velocity().y()*velocity().y());
+        qDebug() << mJumpStep;
     }
     emit changed(this);
 }

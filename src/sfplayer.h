@@ -35,6 +35,9 @@ private:
     QImage currentSprite() const;
 
     float              mSpeed;
+    float              mJumpHeight;
+    float              mJumpStep;
+    QPointF            mGroundPos;
     State              mState;
     QTime              mStateTimer;
     QMap<State,QImage> mSprites;

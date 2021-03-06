@@ -2,6 +2,7 @@
 #define SFGAME_H
 
 #include <QObject>
+#include <QImage>
 #include <qtr2dzone.h>
 #include <qtr2dbody.h>
 #include "sfsprites.h"
@@ -15,6 +16,7 @@ public:
     SfGame();
 
     QStringList playerList() const;
+    QPixmap     playerIcon(const QString &playerName) const;
 
     virtual void init();
 

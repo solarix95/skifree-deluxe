@@ -57,6 +57,12 @@
             "sprite" : ":/sprites/skifree_sprites.png",
             "rect"   : "315 46 42 27"
         },
+        "jump" : {
+            "type"   : "static",
+            "sprite" : ":/sprites/skifree_sprites.png",
+            "rect"   : "226 198 32 8",
+            "attributes" : {"jump" : "1"}
+        },
         "start-right" : {
             "type"   : "static",
             "sprite" : ":/sprites/skifree_sprites.png",
@@ -70,7 +76,11 @@
 
         "child" : {
             "type"   : "player",
-            "speed"  : "0.5",
+            "speed"  : "0.7",
+            "icon" : {
+                "sprite" : ":/sprites/skifree_sprites.png",
+                "rect"   : "12 103 22 29"
+            },
             "sprites": {
                 "left" : {
                     "sprite" : ":/sprites/skifree_sprites.png",
@@ -89,7 +99,11 @@
 
         "skier" : {
             "type"   : "player",
-            "speed"  : "2.5",
+            "speed"  : "3.0",
+            "icon" : {
+                "sprite" : ":/sprites/skifree_sprites.png",
+                "rect"   : "59 9 16 31"
+            },
             "sprites": {
                 "right" : {
                     "sprite" : ":/sprites/skifree_sprites.png",
@@ -104,8 +118,12 @@
 
         "boarder" : {
             "type"   : "player",
-            "speed"  : "3.5",
-            "sprites": {
+            "speed"  : "4.5",
+            "icon" : {
+                "sprite" : ":/sprites/skifree_sprites.png",
+                "rect"   : "13 141 20 29"
+            },
+            "sprites": {  
                 "right" : {
                     "sprite" : ":/sprites/skifree_sprites.png",
                     "rect"   : "13 141 20 29"

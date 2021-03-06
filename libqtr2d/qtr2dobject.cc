@@ -67,6 +67,18 @@ QRectF Qtr2dObject::collisionRect() const
 }
 
 //-------------------------------------------------------------------------------------------------
+void Qtr2dObject::setAttribute(const QString &name, const QVariant &value)
+{
+    mAttributs[name] = value;
+}
+
+//-------------------------------------------------------------------------------------------------
+QVariant Qtr2dObject::attribute(const QString &name, const QVariant &defaultValue) const
+{
+    return mAttributs.value(name,defaultValue);
+}
+
+//-------------------------------------------------------------------------------------------------
 void Qtr2dObject::updatePosition(const QPointF &newPos)
 {
     if (mPos == newPos)

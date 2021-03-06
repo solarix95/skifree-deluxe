@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QPointF>
 #include <QList>
+#include <QVariant>
 #include <QVector2D>
 
 class Qtr2dZone;
@@ -29,6 +30,9 @@ public:
     virtual QRectF boundingRect() const = 0;
     virtual QRectF collisionRect() const;
 
+    void     setAttribute(const QString &name, const QVariant &value);
+    QVariant attribute(const QString &name, const QVariant &defaultValue = QVariant()) const;
+
 signals:
     void changed(Qtr2dObject *obj);
     void created(Qtr2dObject *childObj);
@@ -48,6 +52,8 @@ private:
     QVector2D mVelocity;
     float     mAngle; // current angle
     float     mSpin;
+
+    QMap<QString, QVariant> mAttributs;
 };
 
 typedef QList<Qtr2dObject*> PxsObjects;

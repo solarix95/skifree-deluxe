@@ -5,7 +5,8 @@
 TEMPLATE = app
 TARGET = skifree-deluxe
 INCLUDEPATH += .
-QT += widgets
+QT     += widgets
+CONFIG += debug
 
 # CONFIG += with_builtin_libqtr2d
 
