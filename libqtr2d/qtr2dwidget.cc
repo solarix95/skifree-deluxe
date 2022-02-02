@@ -72,6 +72,12 @@ void Qtr2dWidget::keyReleaseEvent(QKeyEvent *event)
 }
 
 //-------------------------------------------------------------------------------------------------
+void Qtr2dWidget::onStateChange()
+{
+
+}
+
+//-------------------------------------------------------------------------------------------------
 void Qtr2dWidget::menuDestroyed(QObject *menu)
 {
     if (menu == (QObject*)mMenu)

@@ -21,6 +21,7 @@ SOURCES += main.cc \
     sfobjects.cc \
     sfstaticobject.cc \
     sfplayer.cc \
+    sfautoplayer.cc \
     sfwidget.cc
 
 RESOURCES += \
@@ -33,5 +34,6 @@ HEADERS += \
     sfobjects.h \
     sfstaticobject.h \
     sfplayer.h \
+    sfautoplayer.h \
     sfwidget.h
 

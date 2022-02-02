@@ -38,42 +38,53 @@ bool Qtr2dBody::move(double speed)
 }
 
 //-------------------------------------------------------------------------------------------------
-void Qtr2dBody::testCollision()
+bool Qtr2dBody::testCollision(bool test)
 {
+    bool collision = false;
     foreach(Qtr2dBody *other, zone().bodies()) {
         if (other != this)
-            other->testCollision(this);
+            collision = other->testCollision(this, test) || collision;
     }
-    if (zone().testCollision(this))
-        collideWith(NULL);
+    if (zone().testCollision(this)) {
+        collision = true;
+        if (!test)
+            collideWith(NULL);
+    }
+
+    return collision;
 }
 
 //-------------------------------------------------------------------------------------------------
-void Qtr2dBody::testCollision(Qtr2dBody *other)
+bool Qtr2dBody::testCollision(Qtr2dBody *other, bool test)
 {
     Q_ASSERT(this != other);
     if (QVector2D(this->pos() - other->pos()).length() > (this->mCollisionRadius + other->mCollisionRadius))
-        return;
+        return false;
 
     // Rect/Rect Collision
     if (this->mCollisionType == RectCollision && other->mCollisionType == RectCollision) {
         if (this->collisionRect().intersects(other->collisionRect()))
         {
-            this->collideWith(other);
+            if (!test)
+                this->collideWith(other);
+            return true;
         }
-        return;
+        return false;
     }
 
     // Radial/Radial
     if (this->mCollisionType == RadialCollision && other->mCollisionType == RadialCollision) {
-        this->collideWith(other);
-        return;
+        if (!test)
+            this->collideWith(other);
+        return true;
     }
 
     // TODO: Rect/Radial-Collision
     // Rect/Radial
     Qtr2dBody *rectBody  = this->mCollisionType == RectCollision ? this : other;
     Qtr2dBody *radialBody = rectBody == this ? other : this;
+
+    return false;
 }
 
 //-------------------------------------------------------------------------------------------------

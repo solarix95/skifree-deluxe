@@ -109,6 +109,10 @@
                     "sprite" : ":/sprites/skifree_sprites.png",
                     "rect"   : "59 9 16 31"
                 },
+                "downhill" : {
+                    "sprite" : ":/sprites/skifree_sprites.png",
+                    "rect"   : "78 8 15 32"
+                },
                 "crashed" : {
                     "sprite" : ":/sprites/skifree_sprites.png",
                     "rect"   : "252 9 31 31"

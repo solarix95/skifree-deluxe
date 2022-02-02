@@ -22,8 +22,10 @@ protected:
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void keyPressEvent(QKeyEvent *event);
     virtual void keyReleaseEvent(QKeyEvent *event);
+    virtual void onStateChange();
 
 signals:
+    void stateChanged();
 
 public slots:
 

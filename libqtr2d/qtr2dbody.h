@@ -26,8 +26,8 @@ public:
 
 protected:
     virtual void accelerate(double speed);
-    virtual void testCollision();
-    virtual void testCollision(Qtr2dBody *other);
+    virtual bool testCollision(bool test = false);
+    virtual bool testCollision(Qtr2dBody *other, bool test = false);
 
     void collideWith(Qtr2dBody *other);
     virtual void onCollision(Qtr2dBody *other);
