@@ -26,6 +26,9 @@ SfPlayer::~SfPlayer()
 //-------------------------------------------------------------------------------------------------
 void SfPlayer::appendSprite(SfPlayer::State s, const QPixmap &sprite)
 {
+    if (sprite.isNull())
+        return;
+
     mSprites[s] = sprite.toImage();
 }
 
@@ -38,19 +41,32 @@ void SfPlayer::setSpeed(float speed)
 //-------------------------------------------------------------------------------------------------
 bool SfPlayer::move(double speed)
 {
-    if (mState == CrashedState && mStateTimer.elapsed() > 1000) {
+    if (mState == CrashedState && mStateTimer.elapsed() > 2000) {
+        // Repositioning after Crash:
+        do {
+            mGroundPos = QPointF(mGroundPos.x(),mGroundPos.y() - 50);
+            updatePosition(mGroundPos);
+        } while (testCollision(true));
 
+        setState(qrand()%2 ? LeftState : RightState);
+        setState(DownHillState); // will be ignored if there is no downhill..
+        return false;
     }
 
     accelerate(speed);
     mGroundPos = QPointF(mGroundPos.x() + velocity().x(),mGroundPos.y() + velocity().y());
 
-    mJumpHeight += mJumpStep * speed;
-    mJumpStep -= 0.2;
+    if (mJumpStep > 0) {
+        mJumpHeight += mJumpStep * speed;
+        mJumpStep -= 0.2;
+    }
+
     if (mJumpHeight < 0) {
         mJumpHeight = 0;
         mJumpStep   = 0;
+        setState(DownHillState);
     }
+
     QPointF newPos(mGroundPos.x(), mGroundPos.y() + mJumpHeight);
     updatePosition(newPos);
     testCollision();
@@ -73,7 +89,9 @@ void SfPlayer::keyPressEvent(QKeyEvent *event)
     }
     if (event->key() == Qt::Key_Right) {
         setState(RightState);
-
+    }
+    if (event->key() == Qt::Key_Down) {
+        setState(DownHillState);
     }
 
     if (event->key() == Qt::Key_Space && mJumpHeight <= 0) {
@@ -123,6 +141,12 @@ void SfPlayer::onCollision(Qtr2dBody *other)
 }
 
 //-------------------------------------------------------------------------------------------------
+SfPlayer::State SfPlayer::state() const
+{
+    return mState;
+}
+
+//-------------------------------------------------------------------------------------------------
 QImage SfPlayer::currentSprite() const
 {
     return mSprites[mState];
@@ -132,6 +156,9 @@ QImage SfPlayer::currentSprite() const
 void SfPlayer::setState(SfPlayer::State newState)
 {
     if (mState == newState)
+        return;
+
+    if (!mSprites.contains(newState))
         return;
 
     mState = newState;
@@ -147,6 +174,9 @@ void SfPlayer::setState(SfPlayer::State newState)
         break;
     case RightState:
         setVelocity(QVector2D( mSpeed, -mSpeed));
+        break;
+    case DownHillState:
+        setVelocity(QVector2D( 0, -1.5 * mSpeed));
         break;
     }
 }

@@ -16,13 +16,13 @@ public:
     SfObjects();
 
     void init(Qtr2dZone &zone, const QVariantMap &jsonConfig);
-    Qtr2dBody *create(const QString &name, const QPointF &pos);
+    Qtr2dBody *create(const QString &name, const QPointF &pos, bool isAutoPlayer = false);
     QStringList playerList() const;
     QPixmap     icon(const QString &name) const;
 
 private:
     Qtr2dBody *createStaticBody(const QVariantMap &jsonConfig, const QPointF &pos);
-    Qtr2dBody *createPlayerBody(const QVariantMap &jsonConfig, const QPointF &pos);
+    Qtr2dBody *createPlayerBody(const QVariantMap &jsonConfig, const QPointF &pos, bool isAutoPlayer);
 
 
     bool           config2Sprite(const QVariantMap &jsonConfig, QPixmap &sprite);

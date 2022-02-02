@@ -102,6 +102,13 @@ void SfGame::updateScenery()
         registerBody(mObjects.create(staticObjs[qrand()%staticObjs.count()],QPointF(x,y)));
     }
 
+    for (int i=0; i<5; i++) {
+        int x = minX + (qrand() % (maxX - minX));
+        int y = minY - (qrand() % (maxY - minY));
+        QStringList players = playerList();
+        registerBody(mObjects.create(players[qrand()%players.count()],QPointF(x,y),true));
+    }
+
     mSceneryY = maxY;
 
     // Remove top/old objects
@@ -113,7 +120,7 @@ void SfGame::updateScenery()
             bdys[i]->deleteLater();
             deleted++;
         }
-        if (deleted > 50)
+        if (deleted > 55)
             return;
     }
 }

@@ -2,6 +2,7 @@
 #include "sfobjects.h"
 #include "sfstaticobject.h"
 #include "sfplayer.h"
+#include "sfautoplayer.h"
 
 //-------------------------------------------------------------------------------------------------
 SfObjects::SfObjects()
@@ -17,7 +18,7 @@ void SfObjects::init(Qtr2dZone &zone, const QVariantMap &jsonConfig)
 }
 
 //-------------------------------------------------------------------------------------------------
-Qtr2dBody *SfObjects::create(const QString &name, const QPointF &pos)
+Qtr2dBody *SfObjects::create(const QString &name, const QPointF &pos, bool isAutoPlayer)
 {
     QVariantMap bodyConfig = mObjectsConfig[name].toMap();
     Q_ASSERT(!bodyConfig.isEmpty());
@@ -29,7 +30,7 @@ Qtr2dBody *SfObjects::create(const QString &name, const QPointF &pos)
         body = createStaticBody(bodyConfig, pos);
 
     if (bodyType == "player")
-        body = createPlayerBody(bodyConfig, pos);
+        body = createPlayerBody(bodyConfig, pos, isAutoPlayer);
 
     applyAttributes(body,bodyConfig);
     return body;
@@ -79,19 +80,22 @@ Qtr2dBody *SfObjects::createStaticBody(const QVariantMap &jsonConfig, const QPoi
 }
 
 //-------------------------------------------------------------------------------------------------
-Qtr2dBody *SfObjects::createPlayerBody(const QVariantMap &jsonConfig, const QPointF &pos)
+Qtr2dBody *SfObjects::createPlayerBody(const QVariantMap &jsonConfig, const QPointF &pos, bool isAutoPlayer)
 {
     QVariantMap spritesConfig = jsonConfig["sprites"].toMap();
 
-    SfPlayer *p = new SfPlayer(pos,*mZone);
+
+    SfPlayer *p = isAutoPlayer ? new SfAutoPlayer(pos,*mZone) : new SfPlayer(pos,*mZone);
 
     QPixmap leftSprite;
     QPixmap rightSprite;
     QPixmap crashedSprite;
+    QPixmap downhillSprite;
 
     config2Sprite(spritesConfig["left"].toMap(),leftSprite);
     config2Sprite(spritesConfig["right"].toMap(),rightSprite);
     config2Sprite(spritesConfig["crashed"].toMap(),crashedSprite);
+    config2Sprite(spritesConfig["downhill"].toMap(),downhillSprite);
 
     if (leftSprite.isNull() && !rightSprite.isNull())
         leftSprite = QPixmap::fromImage(rightSprite.toImage().mirrored(true,false));
@@ -102,6 +106,7 @@ Qtr2dBody *SfObjects::createPlayerBody(const QVariantMap &jsonConfig, const QPoi
     p->appendSprite(SfPlayer::LeftState,leftSprite);
     p->appendSprite(SfPlayer::RightState,rightSprite);
     p->appendSprite(SfPlayer::CrashedState,crashedSprite);
+    p->appendSprite(SfPlayer::DownHillState,downhillSprite);
 
     bool done = false;
     float speed = jsonConfig["speed"].toFloat(&done);

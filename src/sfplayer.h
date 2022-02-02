@@ -13,6 +13,7 @@ public:
     enum State {
         LeftState,
         RightState,
+        DownHillState,
         CrashedState
     };
 
@@ -24,12 +25,13 @@ public:
     void setState(State newState);
 
     virtual bool     move(double speed);
-    virtual void keyPressEvent(QKeyEvent *event);
-    virtual QRectF boundingRect() const;
+    virtual void     keyPressEvent(QKeyEvent *event);
+    virtual QRectF   boundingRect() const;
 
   protected:
     virtual void renderModelCentered(QPainter &p) const;
     virtual void onCollision(Qtr2dBody *other);
+    State   state() const;
 
 private:
     QImage currentSprite() const;
